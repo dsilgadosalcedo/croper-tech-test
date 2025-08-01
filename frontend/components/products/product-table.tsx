@@ -196,21 +196,21 @@ export default function ProductTable({
         </div>
         {products.map((product) => (
           <Card key={product.id}>
-            <CardContent className="p-4">
+            <CardContent>
               <div className="space-y-2">
                 <div className="flex justify-between items-start">
                   <h3 className="font-medium text-lg">{product.nombre}</h3>
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
-                      size="sm"
+                      size="icon"
                       onClick={() => onEdit(product)}
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="outline"
-                      size="sm"
+                      size="icon"
                       onClick={() => handleDelete(product.id)}
                       disabled={deletingId === product.id}
                     >
