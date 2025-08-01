@@ -28,9 +28,9 @@ export default function CreateProductPage() {
   };
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
+    <div className="container mx-auto py-8 space-y-6 px-4 md:px-0">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row  items-start sm:items-center gap-4">
+      <div className="flex items-start sm:items-center gap-4">
         <Link href="/products">
           <Button variant="outline" size="icon">
             <ArrowLeft className="h-4 w-4" />

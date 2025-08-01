@@ -67,7 +67,7 @@ export default function ProductForm({
       nombre: product?.nombre || "",
       descripcion: product?.descripcion || "",
       precio: product?.precio || 0,
-      categoria: product?.categoria || "none",
+      categoria: product?.categoria || "no-category",
     },
   });
 
@@ -163,9 +163,9 @@ export default function ProductForm({
                     <FormLabel>Categoría</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(value === "none" ? undefined : value);
+                        field.onChange(value);
                       }}
-                      value={field.value || "none"}
+                      value={field.value || "no-category"}
                     >
                       <FormControl>
                         <SelectTrigger className="w-full">
@@ -173,7 +173,9 @@ export default function ProductForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="none">Sin categoría</SelectItem>
+                        <SelectItem value="no-category">
+                          Sin categoría
+                        </SelectItem>
                         {CATEGORIAS.map((categoria) => (
                           <SelectItem key={categoria} value={categoria}>
                             {categoria}

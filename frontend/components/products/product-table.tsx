@@ -159,7 +159,7 @@ export default function ProductTable({
                       {product.descripcion || "-"}
                     </TableCell>
                     <TableCell>{formatPrice(product.precio)}</TableCell>
-                    <TableCell>{product.categoria || "-"}</TableCell>
+                    <TableCell>{product.categoria || ""}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-2 justify-end">
                         <Button

@@ -93,7 +93,7 @@ export default function EditProductPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
+    <div className="container mx-auto py-8 space-y-6 px-4 md:px-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <Link href="/products">

@@ -68,8 +68,8 @@ export default function ProductsPage() {
     );
   }
 
-  // Show error if authentication failed
-  if (!isAuthenticated) {
+  // Show error if authentication failed (only after loading is complete)
+  if (!isAuthenticated && !authLoading) {
     return (
       <div className="container mx-auto py-8">
         <ErrorMessage
@@ -92,7 +92,7 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
+    <div className="container mx-auto py-8 space-y-6 px-4 lg:px-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -100,13 +100,13 @@ export default function ProductsPage() {
         </div>
 
         {/* Search */}
-        <div className="relative md:w-1/2">
+        <div className="relative w-full md:w-1/2">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             placeholder="Buscar por nombre, descripción o categoría..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 w-full h-10 rounded-full"
+            className="pl-10 w-full h-10 rounded-full text-sm"
           />
         </div>
       </div>
