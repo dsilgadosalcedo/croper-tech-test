@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
+import { ReduxProvider } from "../lib/store/provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -9,7 +10,8 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: "Croper",
-  description: "Hola Croper",
+  description: "Croper Tech Test - Sistema de gestión de productos",
+  authors: [{ name: "David Silgado", url: "https://github.com/dsilgadosalcedo" }],
 };
 
 export default function RootLayout({
@@ -18,11 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} antialiased`}
       >
-        {children}
+        <ReduxProvider>
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );
