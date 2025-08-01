@@ -3,10 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { appConfig, validationSchema } from './config';
 import { HealthModule } from './health/health.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
     HealthModule,
+    ProductsModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig],
@@ -14,7 +16,7 @@ import { HealthModule } from './health/health.module';
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('app.mongo.connection'),
       }),
       inject: [ConfigService],
