@@ -11,6 +11,16 @@ const initialState: AuthState = {
   error: null,
 };
 
+// Extended state to track initialization
+interface ExtendedAuthState extends AuthState {
+  isInitialized: boolean;
+}
+
+const extendedInitialState: ExtendedAuthState = {
+  ...initialState,
+  isInitialized: false,
+};
+
 // Async thunks
 export const authenticateUser = createAsyncThunk<
   AuthToken,
@@ -28,7 +38,7 @@ export const authenticateUser = createAsyncThunk<
 // Auth slice
 export const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: extendedInitialState,
   reducers: {
     logout: (state) => {
       state.token = null;
@@ -46,6 +56,11 @@ export const authSlice = createSlice({
       apiClient.setAuthToken(action.payload);
     },
     initializeAuth: (state) => {
+      // Only initialize once
+      if (state.isInitialized) {
+        return;
+      }
+
       // Check if token exists in localStorage on app initialization
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("auth_token");
@@ -62,6 +77,8 @@ export const authSlice = createSlice({
         // Server-side rendering, set loading to false
         state.isLoading = false;
       }
+
+      state.isInitialized = true;
     },
   },
   extraReducers: (builder) => {
