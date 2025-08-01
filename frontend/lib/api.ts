@@ -39,7 +39,12 @@ class ApiClient {
     endpoint: string,
     config: RequestConfig = { method: "GET" }
   ): Promise<T> {
-    const url = new URL(endpoint, this.baseUrl);
+        // Fix URL construction - ensure endpoint is properly appended to baseUrl
+    const fullUrl = endpoint.startsWith("/")
+      ? `${this.baseUrl}${endpoint}`
+      : `${this.baseUrl}/${endpoint}`;
+    
+    const url = new URL(fullUrl);
 
     // Add query parameters
     if (config.params) {

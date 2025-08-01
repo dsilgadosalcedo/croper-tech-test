@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../lib/store';
-import { authActions, authenticateUser } from '../lib/store/auth-slice';
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../lib/store";
+import { authActions, authenticateUser } from "../lib/store/auth-slice";
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
@@ -12,12 +12,12 @@ export const useAuth = () => {
   useEffect(() => {
     // First check if we have a token
     dispatch(authActions.initializeAuth());
-    
+
     // If not authenticated, automatically login
     if (!isAuthenticated && !isLoading) {
       dispatch(authenticateUser());
     }
-  }, [dispatch, isAuthenticated, isLoading]);
+  }, [dispatch]); // Only depend on dispatch to run once
 
   // Auto-refresh token logic
   useEffect(() => {
@@ -25,7 +25,7 @@ export const useAuth = () => {
       // Check token expiration every hour
       const interval = setInterval(() => {
         // Check if token exists
-        if (!localStorage.getItem('auth_token')) {
+        if (!localStorage.getItem("auth_token")) {
           dispatch(authActions.logout());
         }
       }, 60 * 60 * 1000); // Check every hour
@@ -44,4 +44,4 @@ export const useAuth = () => {
   };
 };
 
-export default useAuth; 
+export default useAuth;
