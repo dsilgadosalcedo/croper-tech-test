@@ -39,11 +39,11 @@ class ApiClient {
     endpoint: string,
     config: RequestConfig = { method: "GET" }
   ): Promise<T> {
-        // Fix URL construction - ensure endpoint is properly appended to baseUrl
+    // Fix URL construction - ensure endpoint is properly appended to baseUrl
     const fullUrl = endpoint.startsWith("/")
       ? `${this.baseUrl}${endpoint}`
       : `${this.baseUrl}/${endpoint}`;
-    
+
     const url = new URL(fullUrl);
 
     // Add query parameters
@@ -151,7 +151,7 @@ class ApiClient {
 
 // Create API client instance
 const apiConfig: ApiConfig = {
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || "",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api",
   timeout: 10000,
 };
 

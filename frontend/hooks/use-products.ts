@@ -1,21 +1,21 @@
-import { useMemo, useCallback } from 'react';
-import { toast } from 'sonner';
+import { useMemo, useCallback } from "react";
+import { toast } from "sonner";
 import {
   useGetProductsQuery,
   // useGetProductQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
-} from '../lib/store/products-api';
-import { useAppDispatch, useAppSelector } from '../lib/store';
-import { productsActions } from '../lib/store/products-slice';
+} from "../lib/store/products-api";
+import { useAppDispatch, useAppSelector } from "../lib/store";
+import { productsActions } from "../lib/store/products-slice";
 import {
   Product,
   CreateProductDto,
   UpdateProductDto,
   ProductFilters,
   SortConfig,
-} from '../lib/types';
+} from "../lib/types";
 
 export const useProducts = () => {
   const dispatch = useAppDispatch();
@@ -52,14 +52,14 @@ export const useProducts = () => {
         (product) =>
           product.nombre.toLowerCase().includes(query) ||
           product.descripcion?.toLowerCase().includes(query) ||
-          product.categoria?.toLowerCase().includes(query),
+          product.categoria?.toLowerCase().includes(query)
       );
     }
 
     // Apply filters
     if (filters.categoria) {
       result = result.filter(
-        (product) => product.categoria === filters.categoria,
+        (product) => product.categoria === filters.categoria
       );
     }
 
@@ -83,10 +83,10 @@ export const useProducts = () => {
         if (bValue === undefined) return -1;
 
         if (aValue < bValue) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
+          return sortConfig.direction === "asc" ? -1 : 1;
         }
         if (aValue > bValue) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
+          return sortConfig.direction === "asc" ? 1 : -1;
         }
         return 0;
       });
@@ -125,6 +125,15 @@ export const useProducts = () => {
   const handleCreateProduct = useCallback(
     async (productData: CreateProductDto) => {
       try {
+        // Convert "no-category" to empty string for API
+        const apiData = {
+          ...productData,
+          categoria:
+            productData.categoria === "no-category"
+              ? ""
+              : productData.categoria,
+        };
+
         // Optimistic update
         const tempProduct: Product = {
           id: `temp-${Date.now()}`,
@@ -132,51 +141,60 @@ export const useProducts = () => {
         };
         dispatch(productsActions.optimisticAddProduct(tempProduct));
 
-        const result = await createProduct(productData).unwrap();
+        const result = await createProduct(apiData).unwrap();
 
         // Remove optimistic update
         dispatch(productsActions.optimisticDeleteProduct(tempProduct.id));
 
-        toast.success('Producto creado exitosamente');
+        toast.success("Producto creado exitosamente");
         return result;
       } catch (error: any) {
-        toast.error(error?.message || 'Error al crear el producto');
+        toast.error(error?.message || "Error al crear el producto");
         throw error;
       }
     },
-    [createProduct, dispatch],
+    [createProduct, dispatch]
   );
 
   const handleUpdateProduct = useCallback(
     async (id: string, productData: UpdateProductDto) => {
       try {
-        const result = await updateProduct({ id, data: productData }).unwrap();
-        toast.success('Producto actualizado exitosamente');
+        // Convert "no-category" to empty string for API
+        const apiData = {
+          ...productData,
+          categoria:
+            productData.categoria === "no-category"
+              ? ""
+              : productData.categoria,
+        };
+
+        const result = await updateProduct({ id, data: apiData }).unwrap();
+        toast.success("Producto actualizado exitosamente");
         return result;
       } catch (error: any) {
-        toast.error(error?.message || 'Error al actualizar el producto');
+        toast.error(error?.message || "Error al actualizar el producto");
         throw error;
       }
     },
-    [updateProduct],
+    [updateProduct]
   );
 
   const handleDeleteProduct = useCallback(
     async (id: string) => {
       try {
         await deleteProduct(id).unwrap();
-        toast.success('Producto eliminado exitosamente');
+        toast.success("Producto eliminado exitosamente");
 
         // Clear selected product
         if (selectedProduct?.id === id) {
           dispatch(productsActions.setSelectedProduct(null));
         }
       } catch (error: any) {
-        toast.error(error?.message || 'Error al eliminar el producto');
+        toast.error(error?.message || "Error al eliminar el producto");
         throw error;
       }
     },
-    [deleteProduct, selectedProduct?.id, dispatch],
+    [deleteProduct, selectedProduct?.id, dispatch]
   );
 
   // Filter and search actions
@@ -185,7 +203,7 @@ export const useProducts = () => {
       dispatch(productsActions.setFilters(filters));
       dispatch(productsActions.setCurrentPage(1));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const updateFilter = useCallback(
@@ -193,7 +211,7 @@ export const useProducts = () => {
       dispatch(productsActions.updateFilter({ key, value }));
       dispatch(productsActions.setCurrentPage(1));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const clearFilters = useCallback(() => {
@@ -206,14 +224,14 @@ export const useProducts = () => {
       dispatch(productsActions.setSearchQuery(query));
       dispatch(productsActions.setCurrentPage(1));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const setSortConfig = useCallback(
     (config: SortConfig | null) => {
       dispatch(productsActions.setSortConfig(config));
     },
-    [dispatch],
+    [dispatch]
   );
 
   // Pagination actions
@@ -221,14 +239,14 @@ export const useProducts = () => {
     (page: number) => {
       dispatch(productsActions.setCurrentPage(page));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const setSelectedProduct = useCallback(
     (product: Product | null) => {
       dispatch(productsActions.setSelectedProduct(product));
     },
-    [dispatch],
+    [dispatch]
   );
 
   return {

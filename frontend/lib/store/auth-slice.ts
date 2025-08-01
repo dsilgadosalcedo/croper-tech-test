@@ -7,7 +7,7 @@ const initialState: AuthState = {
   token: null,
   user: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true, // Start with loading true to prevent flash
   error: null,
 };
 
@@ -52,8 +52,15 @@ export const authSlice = createSlice({
         if (token) {
           state.token = token;
           state.isAuthenticated = true;
+          state.isLoading = false;
           apiClient.setAuthToken(token);
+        } else {
+          // No token found, set loading to false
+          state.isLoading = false;
         }
+      } else {
+        // Server-side rendering, set loading to false
+        state.isLoading = false;
       }
     },
   },

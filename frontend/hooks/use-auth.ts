@@ -13,11 +13,11 @@ export const useAuth = () => {
     // First check if we have a token
     dispatch(authActions.initializeAuth());
 
-    // If not authenticated, automatically login
+    // If not authenticated and not loading, automatically login
     if (!isAuthenticated && !isLoading) {
       dispatch(authenticateUser());
     }
-  }, [dispatch]); // Only depend on dispatch to run once
+  }, [dispatch, isAuthenticated, isLoading]);
 
   // Auto-refresh token logic
   useEffect(() => {
