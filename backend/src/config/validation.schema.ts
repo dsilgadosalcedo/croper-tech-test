@@ -14,7 +14,8 @@ export const validationSchema = Joi.object({
   MONGO_INITDB_ROOT_PASSWORD: Joi.string().required(),
   MONGO_PORT: Joi.number().default(27017),
   MONGO_HOST: Joi.string().default('localhost'),
-  MONGO_CONNECTION: Joi.string().required(),
+  MONGO_CONNECTION: Joi.string().optional(),
+  MONGODB_URL: Joi.string().optional(),
 
   // JWT
   JWT_SECRET: Joi.string().required(),
