@@ -14,4 +14,8 @@ export default registerAs('app', () => ({
     host: process.env.MONGO_HOST || 'localhost',
     connection: process.env.MONGO_CONNECTION || 'mongodb://localhost:27017',
   },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+  },
 }));
