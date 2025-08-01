@@ -1,98 +1,151 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Product Catalog API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A RESTful API built with NestJS for managing a product catalog. This application provides authentication, CRUD operations for products, and comprehensive API documentation.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **Authentication**: JWT-based authentication system
+- **Product Management**: Full CRUD operations for products
+- **Database**: MongoDB with Mongoose ODM
+- **API Documentation**: Swagger/OpenAPI documentation
+- **Validation**: Request validation with class-validator
+- **CORS**: Cross-Origin Resource Sharing support
+- **Environment Configuration**: Flexible environment-based configuration
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tech Stack
 
-## Project setup
+- **Language**: TypeScript
+- **Database**: MongoDB 7.0
+- **ORM**: Mongoose
+- **Authentication**: JWT with Passport
+- **Documentation**: Swagger/OpenAPI
+- **Validation**: class-validator & class-transformer
+- **Package Manager**: pnpm
 
-```bash
-$ pnpm install
+## Prerequisites
+
+- Node.js (v18 or higher)
+- pnpm
+- Docker & Docker Compose (for local development)
+- MongoDB (provided via Docker)
+
+## Configuration
+
+### Environment Setup
+
+Create a `.env` file in the backend directory:
+
+```env
+# Server Configuration
+PORT=3000
+
+# MongoDB Configuration
+MONGO_DB=product_catalog
+MONGO_INITDB_ROOT_USERNAME=root
+MONGO_INITDB_ROOT_PASSWORD=root
+MONGO_PORT=27017
+MONGO_HOST=localhost
+MONGODB_URL=mongodb://root:root@localhost:27017/product_catalog?authSource=admin
+
+# JWT Configuration
+JWT_SECRET=your-secret-jwt-key
+JWT_EXPIRES_IN=1d
+
+# CORS Configuration
+CORS_ORIGINS=http://localhost:3000,http://localhost:3000
 ```
 
-## Compile and run the project
+## API Documentation
 
-```bash
-# development
-$ pnpm run start
+The application interactive API documentation is at:
 
-# watch mode
-$ pnpm run start:dev
+**Swagger UI**: http://localhost:3000/api/docs
 
-# production mode
-$ pnpm run start:prod
+## Authentication
+
+The API uses JWT-based authentication. To access protected endpoints:
+
+1. **Get a token**: `POST /api/auth/token`
+2. **Use the token**: Include `Authorization: Bearer <token>` in request headers
+
+## API Endpoints
+
+### Authentication
+
+- `POST /api/auth/token` - Get JWT token
+
+### Health Check
+
+- `GET /api/health` - Application health status
+
+### Products
+
+- `GET /api/products` - List all products
+- `POST /api/products` - Create a new product
+- `GET /api/products/:id` - Get a specific product
+- `PUT /api/products/:id` - Update a product
+- `DELETE /api/products/:id` - Delete a product
+
+### Product Schema
+
+```typescript
+{
+  id: string;
+  nombre: string;           // Required
+  descripcion?: string;     // Optional
+  precio: number;           // Required, > 0
+  categoria?: string;       // Optional
+}
 ```
 
-## Run tests
+## Database Schema
 
-```bash
-# unit tests
-$ pnpm run test
+### Product Collection
 
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+```typescript
+{
+  _id: ObjectId;
+  nombre: string;           // Required
+  descripcion?: string;     // Optional
+  precio: number;           // Required, minimum 0.01
+  categoria?: string;       // Optional
+  createdAt: Date;
+  updatedAt: Date;
+}
 ```
 
-## Deployment
+## 📁 Project Structure
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+```
+backend/
+├── src/
+│   ├── auth/                 # Authentication module
+│   │   ├── dto/             # Data Transfer Objects
+│   │   ├── jwt-auth.guard.ts
+│   │   ├── jwt.strategy.ts
+│   │   └── ...
+│   ├── config/              # Configuration module
+│   │   ├── app.config.ts
+│   │   └── validation.schema.ts
+│   ├── health/              # Health check module
+│   ├── products/            # Products module
+│   │   ├── dto/            # Product DTOs
+│   │   ├── schemas/        # MongoDB schemas
+│   │   └── ...
+│   ├── app.module.ts       # Root module
+│   └── main.ts             # Application entry point
+├── docker-compose.yml      # MongoDB Docker setup
+├── package.json
+└── ...
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Security Features
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **JWT Authentication**: Secure token-based authentication
+- **Request Validation**: Input validation using class-validator
+- **CORS Protection**: Configurable Cross-Origin Resource Sharing
+- **Environment Variables**: Secure configuration management
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is part of my Croper Tech Test.
