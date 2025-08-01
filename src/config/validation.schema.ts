@@ -9,10 +9,10 @@ export const validationSchema = Joi.object({
   DATABASE_PORT: Joi.string().optional(),
 
   // MongoDB
-  MONGO_DB: Joi.string().optional(),
-  MONGO_INITDB_ROOT_USERNAME: Joi.string().optional(),
-  MONGO_INITDB_ROOT_PASSWORD: Joi.string().optional(),
-  MONGO_PORT: Joi.number().optional(),
-  MONGO_HOST: Joi.string().optional(),
-  MONGO_CONNECTION: Joi.string().optional(),
+  MONGO_DB: Joi.string().required(),
+  MONGO_INITDB_ROOT_USERNAME: Joi.string().required(),
+  MONGO_INITDB_ROOT_PASSWORD: Joi.string().required(),
+  MONGO_PORT: Joi.number().default(27017),
+  MONGO_HOST: Joi.string().default('localhost'),
+  MONGO_CONNECTION: Joi.string().required(),
 });

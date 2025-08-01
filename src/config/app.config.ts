@@ -10,10 +10,8 @@ export default registerAs('app', () => ({
     dbName: process.env.MONGO_DB,
     user: process.env.MONGO_INITDB_ROOT_USERNAME,
     password: process.env.MONGO_INITDB_ROOT_PASSWORD,
-    port: process.env.MONGO_PORT
-      ? parseInt(process.env.MONGO_PORT, 10)
-      : undefined,
-    host: process.env.MONGO_HOST,
-    connection: process.env.MONGO_CONNECTION,
+    port: process.env.MONGO_PORT ? parseInt(process.env.MONGO_PORT, 10) : 27017,
+    host: process.env.MONGO_HOST || 'localhost',
+    connection: process.env.MONGO_CONNECTION || 'mongodb://localhost:27017',
   },
 }));
