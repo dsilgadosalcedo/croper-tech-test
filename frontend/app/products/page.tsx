@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import ProductTable from "@/components/products/product-table";
 import DeleteDialog from "@/components/products/delete-dialog";
 import LoadingSpinner from "@/components/common/loading";

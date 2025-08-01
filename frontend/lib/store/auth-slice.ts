@@ -9,6 +9,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   isLoading: true, // Start with loading true to prevent flash
   error: null,
+  isInitialized: false,
 };
 
 // Extended state to track initialization
